@@ -63,10 +63,18 @@ class VideoTracker:
             timestamp = datetime.now().isoformat()
 
         # Update history
-        self.history[os.path.basename(video_file)] = {
-            'last_watched': timestamp,
-            'watched_percentage': watched_percentage,
-            'full_path': video_file
+        # self.history[os.path.basename(video_file)] = {
+        #     'last_watched': timestamp,
+        #     'watched_percentage': watched_percentage,
+        #     'full_path': video_file
+        # }
+
+        self.history = {
+            os.path.basename(video_file): {
+                'last_watched': timestamp,
+                'watched_percentage': watched_percentage,
+                'full_path': video_file
+            }
         }
 
         # Save updated history
