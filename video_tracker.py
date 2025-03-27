@@ -10,19 +10,14 @@ class VideoTracker:
     def __init__(self, video_folder):
         """
         Initialize the video tracker for the chosen folder
-
-        :param video_folder: Path to the folder containing video files
+        video_folder: Path to the folder containing video files
         """
         self.video_folder = os.path.abspath(video_folder)
         self.tracking_file = os.path.join(self.video_folder, '.tracker.json')
         self.history = self.load_history()
 
     def load_history(self):
-        """
-        Load viewing history from JSON file
-
-        :return: Dictionary of video tracking information
-        """
+        #Load viewing history from JSON file
         if os.path.exists(self.tracking_file):
             try:
                 with open(self.tracking_file, 'r') as f:
@@ -32,9 +27,8 @@ class VideoTracker:
         return {}
 
     def save_history(self):
-        """
-        Save viewing history to JSON file
-        """
+        #Save viewing history to JSON file
+
         try:
             with open(self.tracking_file, 'w') as f:
                 json.dump(self.history, f, indent=4)
@@ -75,7 +69,6 @@ class VideoTracker:
     def get_last_watched(self, video_file=None):
         """
         Retrieve last watched information
-
         :param video_file: Optional specific video file to retrieve
         :return: Viewing information or full history
         """
@@ -87,11 +80,7 @@ class VideoTracker:
         return self.history
 
     def play_video(self, video_file):
-        """
-        Play a video file using the system's default video player
-
-        :param video_file: Name or path of the video file
-        """
+       # Play a video file using the system's default video player
         # Ensure full path
         if not os.path.isabs(video_file):
             video_file = os.path.join(self.video_folder, video_file)
@@ -122,7 +111,7 @@ class VideoTracker:
 
 def main():
     #ask user for folder path
-    video_folder = input('Input your file path eg. ' r'C:\Users\HP\celluloid\Anime\Dan Da Dan: ')
+    video_folder = input('Input your file path eg. ' r'C:\Users\userOne\Movies\Comedy\yourfavoriteshow: ')
 
     # Create tracker
     tracker = VideoTracker(video_folder)
