@@ -9,7 +9,7 @@ import platform
 class VideoTracker:
     def __init__(self, video_folder):
         """
-        Initialize the video tracker for a specific folder
+        Initialize the video tracker for the chosen folder
 
         :param video_folder: Path to the folder containing video files
         """
@@ -41,38 +41,30 @@ class VideoTracker:
         except IOError as e:
             print(f"Error saving tracking file: {e}")
 
-    def track_video(self, video_file, timestamp=None, watched_percentage=0):
-        """
-        Track a video's viewing progress
-
-        :param video_file: Name of the video file
-        :param timestamp: Last watched timestamp (optional)
-        :param watched_percentage: Percentage of video watched (optional)
-        """
+    def track_video(self, video_file, timestamp=None,):
         # Ensure the video file is in the tracked folder
         if not os.path.isabs(video_file):
             video_file = os.path.join(self.video_folder, video_file)
 
-        # Validate file exists
+        # check if file exists
         if not os.path.exists(video_file):
             print(f"File not found: {video_file}")
             return
 
-        # Use current time if no timestamp provided
+        # Use current time
         if timestamp is None:
             timestamp = datetime.now().isoformat()
 
         # Update history
         # self.history[os.path.basename(video_file)] = {
         #     'last_watched': timestamp,
-        #     'watched_percentage': watched_percentage,
+
         #     'full_path': video_file
         # }
 
         self.history = {
             os.path.basename(video_file): {
                 'last_watched': timestamp,
-                'watched_percentage': watched_percentage,
                 'full_path': video_file
             }
         }
@@ -104,10 +96,9 @@ class VideoTracker:
         if not os.path.isabs(video_file):
             video_file = os.path.join(self.video_folder, video_file)
 
-        # Detect operating system and use appropriate command
         system = platform.system()
         try:
-            if system == "Darwin":  # macOS
+            if system == "Darwin":
                 subprocess.run(["open", video_file], check=True)
             elif system == "Windows":
                 os.startfile(video_file)
@@ -122,11 +113,6 @@ class VideoTracker:
         self.track_video(video_file)
 
     def list_videos(self):
-        """
-        List all video files in the tracked folder
-
-        :return: List of video files
-        """
         video_extensions = ['.mp4', '.avi', '.mkv', '.mov', '.wmv']
         return [
             f for f in os.listdir(self.video_folder)
@@ -145,7 +131,7 @@ def main():
     print("Contents:")
     videos = tracker.list_videos()
 
-    # Sort videos to ensure chronological order
+    # Sort videos
     videos.sort()
 
     for i, video in enumerate(videos, 1):
@@ -168,7 +154,7 @@ def main():
                 print(f"\nPlaying: {selected_video}")
                 tracker.play_video(selected_video)
 
-                # Retrieve last watched info
+                # get the last watched info
                 last_watched = tracker.get_last_watched(selected_video)
                 print("\nLast Watched Info:")
                 print(json.dumps(last_watched, indent=2))
